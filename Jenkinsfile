@@ -2,6 +2,9 @@ pipeline {
     agent any
 
     stages {
+        stage('Echo') {
+            echo 'this is feature1'
+        }
         stage('Compile') {
             steps {
                 sh 'chmod +x ./gradlew && ./gradlew compileJava'
@@ -24,7 +27,7 @@ pipeline {
                 ])
             }
         }
-         stage('Static code analysis') {
+        stage('Static code analysis') {
             steps {
                 sh './gradlew checkstyleMain'
                 publishHTML(target: [
