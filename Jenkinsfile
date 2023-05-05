@@ -3,7 +3,9 @@ pipeline {
 
     stages {
         stage('Echo') {
-            echo 'this is feature1'
+            steps {
+				echo 'this is feature1'
+			}
         }
         stage('Compile') {
             steps {
