@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Compile') {
             steps {
-                sh 'chmod +x ./gradlew && ./gradlew compileJava'
+                sh 'chmod +x ./gradlew && ./gradlew build'
             }
         }
         stage('Unit test') {
@@ -24,7 +24,7 @@ pipeline {
                 ])
             }
         }
-         stage('Static code analysis') {
+        stage('Static code analysis') {
             steps {
                 sh './gradlew checkstyleMain'
                 publishHTML(target: [
@@ -32,6 +32,16 @@ pipeline {
                     reportFiles: 'main.html',
                     reportName: 'CheckStyle Report'
                 ])
+            }
+        }
+        stage('Docker build') {
+            steps {
+                sh 'docker build -t 10.222.60.139:5000/calcjenkins .'
+            }
+        }
+        stage('Docker push') {
+            steps {
+                sh 'docker push 10.222.60.139:5000/calcjenkins'
             }
         }
     }
