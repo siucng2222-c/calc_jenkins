@@ -4,8 +4,8 @@ pipeline {
     stages {
         stage('Echo') {
             steps {
-				echo 'this is feature1'
-			}
+                echo 'this is feature1'
+            }
         }
         stage('Compile') {
             steps {
