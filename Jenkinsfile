@@ -56,4 +56,9 @@ pipeline {
             }
         }
     }
+    post {
+        always {
+            sh 'docker stop calcjenkins'
+        }
+    }
 }
