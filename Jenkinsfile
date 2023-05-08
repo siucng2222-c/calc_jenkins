@@ -36,17 +36,17 @@ pipeline {
         }
         stage('Docker build') {
             steps {
-                sh 'docker build -t 10.222.60.139:5000/calcjenkins .'
+                sh 'docker build -t 172.17.0.1:5000/calcjenkins .'
             }
         }
         stage('Docker push') {
             steps {
-                sh 'docker push 10.222.60.139:5000/calcjenkins'
+                sh 'docker push 172.17.0.1:5000/calcjenkins'
             }
         }
         stage('Deploy to staging') {
             steps {
-                sh 'docker run -d --rm -p 8765:8080 --name calcjenkins 10.222.60.139:5000/calcjenkins'
+                sh 'docker run -d --rm -p 172.17.0.1:8765:8080 --name calcjenkins 172.17.0.1:5000/calcjenkins'
             }
         }
         stage('Acceptance test') {
