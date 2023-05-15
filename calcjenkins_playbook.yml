@@ -1,0 +1,39 @@
+---
+- hosts: web2
+  become: yes
+  become_method: sudo
+  tasks:
+  - name: ensure Java Runtime Environment is installed
+    apt:
+      name: default-jre
+      state: present
+      update_cache: yes
+  - name: create Calcjenkins directory
+    file:
+      path: /var/calcjenkins
+      state: directory
+  - name: copy Calcjenkins starting script
+    copy:
+      src: calcjenkins.sh
+      dest: /var/calcjenkins/calcjenkins.sh
+      mode: a+x
+  - name: configure Calcjenkins as a service
+    file:
+      path: /etc/init.d/calcjenkins
+      state: link
+      force: yes
+      src: /var/calcjenkins/calcjenkins.sh
+  - name: copy Calcjenkins jar
+    copy:
+      src: build/libs/calcjenkins-0.0.1-SNAPSHOT.jar
+      dest: /var/calcjenkins/calcjenkins.jar
+      mode: a+x
+    notify:
+    - restart Calcjenkins
+  handlers:
+  - name: restart Calcjenkins
+    systemd:
+      name: calcjenkins
+      # enabled: yes
+      daemon_reload: true
+      state: restarted
